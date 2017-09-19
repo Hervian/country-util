@@ -105,11 +105,11 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         javaFile.append("private ").append(className).append("(Locale locale){").append(NEWLINE_TAB); //private tmp(Locale locale){
         javaFile.append("\tthis.locale = locale;").append(NEWLINE_TAB);     //  this.locale = locale;
         javaFile.append("}").append(NEWLINE_TAB);                           //}       
-        javaFile.append(NEWLINE);
-//        for (String country : Locale.getISOCountries()){
-//            javaFile.append(country).append(",\n");
-//        }
-//        javaFile.append(";");
+        javaFile.append(NEWLINE).append(NEWLINE_TAB);
+
+        javaFile.append("public Locale getLocale(){").append(NEWLINE_TAB);
+        javaFile.append("\treturn locale;").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE_TAB);
     }
 
     private String getCountryEnumName(Locale locale) {

@@ -12,7 +12,7 @@ import java.util.Locale;
  * an Object instance as the first argument to a non-static method, and vice versa.
  * @author Anders Granau Høfft
  */
-@javax.annotation.Generated(value="com.hervian.lambda.GenerateLambdaProcessor", date="Wed Sep 20 00:33:00 CEST 2017")
+@javax.annotation.Generated(value="com.hervian.lambda.GenerateLambdaProcessor", date="Wed Sep 20 01:24:09 CEST 2017")
 public enum Country{
 
 	ANDORRA(new Locale("AD")),
@@ -274,4 +274,8 @@ public enum Country{
 	}
 	
 
+	public Locale getLocale(){
+		return locale;
+	}
+	
 }
