@@ -8,11 +8,20 @@ The Country enum simply exposes the country names (in english) as well as their 
 public enum Country{
 
 	ANDORRA(new Locale("AD")),
-	UNITED_ARAB_EMIRATES(new Locale("AE")),
 	AFGHANISTAN(new Locale("AF")),
 	ANTIGUA_AND_BARBUDA(new Locale("AG")),
 	ANGUILLA(new Locale("AI")),
-	ALBANIA(new Locale("AL")),
-	ARMENIA(new Locale("AM")),
-  //etc
+        //etc
+	ZAMBIA(new Locale("ZM")),
+	ZIMBABWE(new Locale("ZW"));
+
+	private Locale locale;
+
+	private Country(Locale locale){
+		this.locale = locale;
+	}
+
+	public Locale getLocale(){
+		return locale;
+	}
 ```
