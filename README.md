@@ -1,5 +1,5 @@
 # country-util
-A small project exposing a Country enum
+A small Java project exposing country enums with Locales
 
 # The Country enum
 The Country enum simply exposes the country names (in english) as well as their corresponding Java Locale (from which you can get the [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) two letter country code).
