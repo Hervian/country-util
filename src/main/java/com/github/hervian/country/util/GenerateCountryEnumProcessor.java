@@ -91,7 +91,7 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         for (int i=0; i<countryCodes.length; i++){
             String countryCode = countryCodes[i];
             Locale locale = new Locale("", countryCode);
-            javaFile.append(getCountryEnumName(locale)).append("(new Locale(\"").append(countryCode).append("\"))");
+            javaFile.append(getCountryEnumName(locale)).append("(new Locale(\"\", \"").append(countryCode).append("\"))");
             if (i!=countryCodes.length-1){
                 javaFile.append(",");
             }
