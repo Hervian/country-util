@@ -125,15 +125,23 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
 
         javaFile.append("public Locale[] getLocales(){").append(NEWLINE_TAB);
         javaFile.append("\treturn locales;").append(NEWLINE_TAB);
-        javaFile.append("}").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
         javaFile.append("public Image getFlag(){").append(NEWLINE_TAB);
         javaFile.append("\treturn flag;").append(NEWLINE_TAB);
-        javaFile.append("}").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
         javaFile.append("public String getIso3166CountryCode(){").append(NEWLINE_TAB);
         javaFile.append("\treturn iso3166CountryCode;").append(NEWLINE_TAB);
-        javaFile.append("}").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
+        
+        javaFile.append("public static Country fromIso3166CountryCode(String iso3166CountryCode) {").append(NEWLINE_TAB);
+        javaFile.append("\tfor (Country country: Country.values())").append(NEWLINE_TAB);
+        javaFile.append("\t\tif (country.getIso3166CountryCode().equalsIgnoreCase(iso3166CountryCode))").append(NEWLINE_TAB);
+        javaFile.append("\t\t\treturn country;").append(NEWLINE_TAB);
+        javaFile.append("\treturn null;").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
+        
     }
 
     private String getCountryEnumName(Locale locale) {
