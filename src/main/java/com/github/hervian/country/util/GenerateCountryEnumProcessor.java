@@ -1,6 +1,5 @@
 package com.github.hervian.country.util;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +22,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
+/**
+ * Annotation scanner that creates a new source file: Country, which is populated with country enums.
+ * Each enum will have methods to access the Locales for that country and a method for retriving the country's flag.
+ * Please note that the images are taken from: https://github.com/oxguy3/flags which also contains a reference to an API where one can query for flags.
+ * @author Anders Granau Høfft
+ *
+ */
 public class GenerateCountryEnumProcessor extends AbstractProcessor {
 
     private Filer filer;
@@ -166,8 +172,6 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
             }
             return ImageIO.read(flagFile);
         } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//            return null;
             throw new RuntimeException(e);
         }
     }

@@ -19,10 +19,5 @@ public class GenerateCountryEnumProcessorTest extends TestCase {
         }
     }
 
-    public void test() {
-        File file =  new File(GenerateCountryEnumProcessorTest.class.getClassLoader().getResource("svg/"+"DK".toLowerCase() + ".svg").getFile());
-        System.out.println(file.exists());
-        System.out.println(file.getAbsolutePath());
-    }
     
 }
