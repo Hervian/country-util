@@ -105,7 +105,7 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         for (int i=0; i<countryCodes.length; i++){
             String countryCode = countryCodes[i];
             Locale locale = new Locale("", countryCode);
-            javaFile.append(getCountryEnumName(locale)).append("(GenerateCountryEnumProcessor.getFlagForCountry(\"").append(countryCode).append("\"), ").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
+            javaFile.append(getCountryEnumName(locale)).append("(\"").append(countryCode).append("\", GenerateCountryEnumProcessor.getFlagForCountry(\"").append(countryCode).append("\"), ").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
             if (i!=countryCodes.length-1){
                 javaFile.append(",");
             }
@@ -114,10 +114,11 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         javaFile.append(";");
         
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
-        javaFile.append("private Locale[] locales;"); //private Locale locale;
-        javaFile.append("private Image flag;");
+        javaFile.append("private Locale[] locales;").append(NEWLINE_TAB); //private Locale locale;
+        javaFile.append("private Image flag;").append(NEWLINE_TAB);
+        javaFile.append("private String iso3166CountryCode;").append(NEWLINE_TAB);
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
-        javaFile.append("private ").append(className).append("(Image flag, Locale[] locales){").append(NEWLINE_TAB); //private tmp(Locale locale){
+        javaFile.append("private ").append(className).append("(String iso3166CountryCode, Image flag, Locale[] locales){").append(NEWLINE_TAB); //private tmp(Locale locale){
         javaFile.append("\tthis.locales = locales;").append(NEWLINE_TAB);     //  this.locale = locale;
         javaFile.append("}").append(NEWLINE_TAB);                           //}       
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
@@ -128,6 +129,10 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         
         javaFile.append("public Image getFlag(){").append(NEWLINE_TAB);
         javaFile.append("\treturn flag;").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE_TAB);
+        
+        javaFile.append("public String getIso3166CountryCode(){").append(NEWLINE_TAB);
+        javaFile.append("\treturn iso3166CountryCode;").append(NEWLINE_TAB);
         javaFile.append("}").append(NEWLINE_TAB);
     }
 
