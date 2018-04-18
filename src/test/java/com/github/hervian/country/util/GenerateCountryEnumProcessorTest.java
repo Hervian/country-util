@@ -1,6 +1,5 @@
 package com.github.hervian.country.util;
 
-import java.io.File;
 import java.util.Locale;
 
 import org.junit.Test;

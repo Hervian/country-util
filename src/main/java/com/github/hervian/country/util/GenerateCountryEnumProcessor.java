@@ -1,10 +1,7 @@
 package com.github.hervian.country.util;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -16,7 +13,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.imageio.ImageIO;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -78,7 +74,7 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
             javaFile.append("package ").append(packageOfMarkerClass).append(";").append(NEWLINE).append(NEWLINE);
             
             javaFile.append("import java.util.Locale;").append(NEWLINE);
-            javaFile.append("import java.awt.Image;");
+            javaFile.append("import java.awt.image.BufferedImage;");
             
             javaFile.append("\n\n/**\n * Copyright 2016 Anders Granau Høfft"
                     + "\n * The invocation methods throws an AbstractMethodError, if arguments provided does not match "
@@ -105,29 +101,31 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         for (int i=0; i<countryCodes.length; i++){
             String countryCode = countryCodes[i];
             Locale locale = new Locale("", countryCode);
-            javaFile.append(getCountryEnumName(locale)).append("(\"").append(countryCode).append("\", GenerateCountryEnumProcessor.getFlagForCountry(\"").append(countryCode).append("\"), ").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
+            javaFile.append(getCountryEnumName(locale)).append("(\"").append(countryCode).append("\", ImageUtil.getImageFromCountryCode(\"").append(countryCode).append("\"), ").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
             if (i!=countryCodes.length-1){
                 javaFile.append(",");
             }
-            javaFile.append(NEWLINE_TAB); //DENMARK(new Locale("DK"));
+            javaFile.append(NEWLINE_TAB);
         }
         javaFile.append(";");
         
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
-        javaFile.append("private Locale[] locales;").append(NEWLINE_TAB); //private Locale locale;
-        javaFile.append("private Image flag;").append(NEWLINE_TAB);
+        javaFile.append("private Locale[] locales;").append(NEWLINE_TAB);
+        javaFile.append("private BufferedImage flag;").append(NEWLINE_TAB);
         javaFile.append("private String iso3166CountryCode;").append(NEWLINE_TAB);
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
-        javaFile.append("private ").append(className).append("(String iso3166CountryCode, Image flag, Locale[] locales){").append(NEWLINE_TAB); //private tmp(Locale locale){
-        javaFile.append("\tthis.locales = locales;").append(NEWLINE_TAB);     //  this.locale = locale;
-        javaFile.append("}").append(NEWLINE_TAB);                           //}       
+        javaFile.append("private ").append(className).append("(String iso3166CountryCode, BufferedImage flag, Locale[] locales){").append(NEWLINE_TAB);
+        javaFile.append("\tthis.locales = locales;").append(NEWLINE_TAB);
+        javaFile.append("\tthis.flag = flag;").append(NEWLINE_TAB);
+        javaFile.append("\tthis.iso3166CountryCode = iso3166CountryCode;").append(NEWLINE_TAB);
+        javaFile.append("}").append(NEWLINE_TAB);
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
 
         javaFile.append("public Locale[] getLocales(){").append(NEWLINE_TAB);
         javaFile.append("\treturn locales;").append(NEWLINE_TAB);
         javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
-        javaFile.append("public Image getFlag(){").append(NEWLINE_TAB);
+        javaFile.append("public BufferedImage getFlag(){").append(NEWLINE_TAB);
         javaFile.append("\treturn flag;").append(NEWLINE_TAB);
         javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
@@ -176,23 +174,6 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         }
         return localesForCountry;
     }
-    
-    static BufferedImage getFlagForCountry(String iso3166CountryCode) {
-        try {
-            File flagFile = getFlagFile(iso3166CountryCode);
-            if (flagFile==null) {
-                flagFile = getFlagFile("unknown");
-            }
-            return ImageIO.read(flagFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    static File getFlagFile(String iso3166CountryCode) {
-        URL urlToFile = GenerateCountryEnumProcessor.class.getClassLoader().getResource("svg/"+iso3166CountryCode.toLowerCase() + ".svg");
-        String fileName = urlToFile==null ? "" : urlToFile.getFile();
-        return fileName.isEmpty() ? null : new File(fileName);
-    }
+
 
 }
