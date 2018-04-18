@@ -6,6 +6,11 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 
+/**
+ * Code taken from https://stackoverflow.com/a/23894292/6095334
+ * @author Anders Granau Høfft
+ *
+ */
 public class BufferedImageTranscoder extends ImageTranscoder {
 
     private BufferedImage img = null;

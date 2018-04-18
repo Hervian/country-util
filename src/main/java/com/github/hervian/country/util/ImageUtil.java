@@ -1,15 +1,18 @@
 package com.github.hervian.country.util;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.batik.transcoder.TranscoderInput;
 
 public class ImageUtil {
 
+    /**
+     * Explanation of the surpringly complicated logic: "ImageIO.read(*...) will only load these image types GIF, PNG, JPEG, BMP, and WBMP". See https://stackoverflow.com/a/15726292/6095334
+     * See also {@link BufferedImageTranscoder}
+     * @param iso3166CountryCode
+     * @return
+     */
     static BufferedImage getImageFromCountryCode(String iso3166CountryCode) {
         BufferedImage image = null;
 
