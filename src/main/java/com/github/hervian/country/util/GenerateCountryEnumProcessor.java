@@ -1,5 +1,6 @@
 package com.github.hervian.country.util;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         for (int i=0; i<countryCodes.length; i++){
             String countryCode = countryCodes[i];
             Locale locale = new Locale("", countryCode);
-            javaFile.append(getCountryEnumName(locale)).append("(\"").append(countryCode).append("\", ImageUtil.getImageFromCountryCode(\"").append(countryCode).append("\"), ").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
+            javaFile.append(getCountryEnumName(locale)).append("(\"").append(countryCode).append("\",").append("new Locale[]{").append(getLocalesAsArrayElements(countryCode)).append("})");
             if (i!=countryCodes.length-1){
                 javaFile.append(",");
             }
@@ -111,10 +112,11 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
         javaFile.append("private Locale[] locales;").append(NEWLINE_TAB);
-        javaFile.append("private BufferedImage flag;").append(NEWLINE_TAB);
+        javaFile.append("private volatile BufferedImage flag;").append(NEWLINE_TAB);
         javaFile.append("private String iso3166CountryCode;").append(NEWLINE_TAB);
+        javaFile.append("private final Object lock = new Object();").append(NEWLINE_TAB);
         javaFile.append(NEWLINE).append(NEWLINE_TAB);
-        javaFile.append("private ").append(className).append("(String iso3166CountryCode, BufferedImage flag, Locale[] locales){").append(NEWLINE_TAB);
+        javaFile.append("private ").append(className).append("(String iso3166CountryCode, Locale[] locales){").append(NEWLINE_TAB);
         javaFile.append("\tthis.locales = locales;").append(NEWLINE_TAB);
         javaFile.append("\tthis.flag = flag;").append(NEWLINE_TAB);
         javaFile.append("\tthis.iso3166CountryCode = iso3166CountryCode;").append(NEWLINE_TAB);
@@ -126,7 +128,14 @@ public class GenerateCountryEnumProcessor extends AbstractProcessor {
         javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
         javaFile.append("public BufferedImage getFlag(){").append(NEWLINE_TAB);
-        javaFile.append("\treturn flag;").append(NEWLINE_TAB);
+        javaFile.append("\tBufferedImage localeFlag = flag;").append(NEWLINE_TAB);
+        javaFile.append("\tif (localeFlag==null)").append(NEWLINE_TAB);
+        javaFile.append("\t\tsynchronized (lock) {").append(NEWLINE_TAB);
+        javaFile.append("\t\t\tlocaleFlag = flag;").append(NEWLINE_TAB);
+        javaFile.append("\t\t\tif (localeFlag==null)").append(NEWLINE_TAB);
+        javaFile.append("\t\t\t\tflag = localeFlag = ImageUtil.getImageFromCountryCode(iso3166CountryCode);").append(NEWLINE_TAB);
+        javaFile.append("\t\t}").append(NEWLINE_TAB);
+        javaFile.append("\treturn localeFlag;").append(NEWLINE_TAB);
         javaFile.append("}").append(NEWLINE).append(NEWLINE_TAB);
         
         javaFile.append("public String getIso3166CountryCode(){").append(NEWLINE_TAB);
